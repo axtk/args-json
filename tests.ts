@@ -13,6 +13,10 @@ function test(actual: unknown, expected: unknown) {
     }
 }
 
+test(parseArgs(), {
+    test: 1,
+});
+
 test(parseArgs('--debug'), {
     debug: true,
 });
