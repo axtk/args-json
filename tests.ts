@@ -69,6 +69,16 @@ test(parseArgs('--config ./configs/default.json -d'), {
     d: true,
 });
 
+test(parseArgs('--config=./configs/default.json -d'), {
+    config: './configs/default.json',
+    d: true,
+});
+
+test(parseArgs('--config="./configs/default.json" -d'), {
+    config: './configs/default.json',
+    d: true,
+});
+
 test(parseArgs('-c ./configs/default.json --ttl=1000 -d'), {
     c: './configs/default.json',
     ttl: 1000,
@@ -94,5 +104,19 @@ test(parseArgs('-d \'{"data":{"id":3,"tags":["test","random"]}}\' --debug'), {
     },
     debug: true,
 });
+
+type Args = {
+    config?: string;
+    debug?: boolean;
+};
+
+let parsedArgs = parseArgs<Args>(['--config', './configs/default.json', '--debug']);
+
+test(parsedArgs, {
+    config: './configs/default.json',
+    debug: true,
+});
+
+test(parsedArgs.config, './configs/default.json');
 
 console.log('PASSED');
