@@ -19,8 +19,9 @@
   },
   "keywords": [
     "args",
+    "args-parser",
     "argv",
-    "parser",
+    "argv-parser",
     "json"
   ],
   "author": "axtk",
