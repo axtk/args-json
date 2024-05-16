@@ -69,6 +69,11 @@ test(parseArgs('--config ./configs/default.json -d'), {
     d: true,
 });
 
+test(parseArgs('--config "./configs/default.json" -d'), {
+    config: './configs/default.json',
+    d: true,
+});
+
 test(parseArgs('--config=./configs/default.json -d'), {
     config: './configs/default.json',
     d: true,

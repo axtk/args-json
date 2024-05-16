@@ -42,6 +42,12 @@ if (args.debug)
 The first line is also equivalent to:
 
 ```js
+let args = parseArgs('--config "./configs/default.json" --debug');
+```
+
+or
+
+```js
 let args = parseArgs('--config=./configs/default.json --debug');
 ```
 
