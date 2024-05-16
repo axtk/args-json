@@ -105,6 +105,18 @@ test(parseArgs('-d \'{"data":{"id":3,"tags":["test","random"]}}\' --debug'), {
     debug: true,
 });
 
+let longLine = '-i -n=0 --test qwe -d "lorem ipsum" --config=./config.json -x true --debug';
+
+test(parseArgs(longLine, {d: 'description'}), {
+    i: true,
+    n: 0,
+    test: 'qwe',
+    description: 'lorem ipsum',
+    config: './config.json',
+    x: true,
+    debug: true,
+});
+
 type Args = {
     config?: string;
     debug?: boolean;

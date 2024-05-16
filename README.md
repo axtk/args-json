@@ -12,7 +12,22 @@ npm i args-json
 
 ```js
 import {parseArgs} from 'args-json';
+
+let args = parseArgs('-i -n=0 --test qwe -d "lorem ipsum" --config=./config.json -x true --debug', {
+    d: 'description',
+});
+// args = {
+//     i: true,
+//     n: 0,
+//     test: 'qwe',
+//     description: 'lorem ipsum',
+//     config: './config.json',
+//     x: true,
+//     debug: true,
+// };
 ```
+
+Note that keys and values can be separated from each other either with a space or an equals sign, and the value can be either quoted or not. These variants are equivalent.
 
 ### String input
 
@@ -35,8 +50,6 @@ or
 ```js
 let args = parseArgs('--config="./configs/default.json" --debug');
 ```
-
-Note that the `config` value is separated from the key either with a space or an equals sign, and the value is either quoted or not. These variants are equivalent.
 
 ### String array input
 
