@@ -87,6 +87,15 @@ if (args.debug)
 
 As specified with the second parameter of `parseArgs()`, `-c` is mapped to `config` in the output.
 
+### Value parsing
+
+Values are `JSON.parse`d if they are parsable.
+
+```js
+let args = parseArgs('-d \'{"x":10}\' -i 0 -n=3 -c ./config.json');
+// {d: {x: 10}, i: 0, n: 3, c: './config.json'}
+```
+
 ### Typing
 
 The output type can be specified by providing a generic type to `parseArgs<T>()`.

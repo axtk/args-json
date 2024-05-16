@@ -117,6 +117,13 @@ test(parseArgs(longLine, {d: 'description'}), {
     debug: true,
 });
 
+test(parseArgs('-d \'{"x":10}\' -i 0 -n=3 -c ./config.json'), {
+    d: {x: 10},
+    i: 0,
+    n: 3,
+    c: './config.json',
+});
+
 type Args = {
     config?: string;
     debug?: boolean;
