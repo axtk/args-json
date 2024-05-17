@@ -39,6 +39,11 @@ function split(x: string): string[] {
     return words;
 }
 
+function getDefaultInput(): string[] {
+    // eslint-disable-next-line no-constant-binary-expression -- for non-node environments
+    return typeof process === undefined ? [] : process.argv.slice(2);
+}
+
 export function parseArgs<T extends Record<string, unknown> = Record<string, unknown>>(
     map?: ArgMap,
 ): T;
@@ -56,14 +61,13 @@ export function parseArgs<T extends Record<string, unknown> = Record<string, unk
     let normalizedMap: ArgMap | undefined;
 
     if (input === undefined)
-        // eslint-disable-next-line no-constant-binary-expression -- for non-node environments
-        normalizedInput = typeof process === undefined ? [] : process.argv.slice(2);
+        normalizedInput = getDefaultInput();
     else if (typeof input === 'string')
         normalizedInput = split(input);
     else if (Array.isArray(input))
         normalizedInput = input.map(x => String(x));
     else if (input !== null && typeof input === 'object') {
-        normalizedInput = process.argv.slice(2);
+        normalizedInput = getDefaultInput();
         normalizedMap = input;
     }
     else normalizedInput = [];
