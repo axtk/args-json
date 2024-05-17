@@ -80,7 +80,7 @@ let args = parseArgs();
 which is equivalent to
 
 ```js
-let args = parseArgs(process.argv.slice(2));
+let args = parseArgs(process.argv);
 ```
 
 ### Key mapping

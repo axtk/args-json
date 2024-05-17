@@ -13,7 +13,15 @@ function test(actual: unknown, expected: unknown) {
     }
 }
 
-test(parseArgs(), {
+let {'': _cmd, ...processArgs} = parseArgs();
+
+test(processArgs, {
+    test: 1,
+});
+
+let {'': _cmd2, ...processArgs2} = parseArgs(process.argv);
+
+test(processArgs2, {
     test: 1,
 });
 

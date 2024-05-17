@@ -41,7 +41,7 @@ function split(x: string): string[] {
 
 function getDefaultInput(): string[] {
     // eslint-disable-next-line no-constant-binary-expression -- for non-node environments
-    return typeof process === undefined ? [] : process.argv.slice(2);
+    return typeof process === undefined ? [] : process.argv;
 }
 
 export function parseArgs<T extends Record<string, unknown> = Record<string, unknown>>(
