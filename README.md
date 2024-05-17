@@ -29,6 +29,8 @@ let args = parseArgs('-i -n=0 --test qwe -d "lorem ipsum" --config=./config.json
 
 Note that keys and values can be separated from each other either with a space or an equals sign, and the value can be either quoted or not. These variants are equivalent.
 
+The second parameter is optional. It is a way to rename argument keys in the output. In the example above, `-d` in the input string is renamed to `description` in the output object.
+
 ### String input
 
 ```js
