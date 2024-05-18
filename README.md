@@ -13,23 +13,25 @@ npm i args-json
 ```js
 import {parseArgs} from 'args-json';
 
-let args = parseArgs('-i -n=0 --test qwe -d "lorem ipsum" --config=./config.json -x true --debug', {
+let args = parseArgs('-i -n=0 --test-value qwe -d "lorem ipsum" --config=./config.json -v 1.5.12 -x true --debug', {
     d: 'description',
+    v: 'version',
 });
 // args = {
 //     i: true,
 //     n: 0,
-//     test: 'qwe',
+//     testValue: 'qwe',
 //     description: 'lorem ipsum',
 //     config: './config.json',
+//     version: '1.5.12',
 //     x: true,
 //     debug: true,
 // };
 ```
 
-Note that keys and values can be separated from each other either with a space or an equals sign, and the value can be either quoted or not. These variants are equivalent.
+Note that keys and values can be separated from each other either with a space or an equals sign, and the value can be either quoted or not. These variants are equivalent. Also, keys are converted to *camelCase* (like `--test-value` &rarr; `testValue` in the example above).
 
-The second parameter is optional. It is a way to rename argument keys in the output. In the example above, `-d` in the input string is renamed to `description` in the output object.
+The second parameter is optional. It is a way to rename argument keys in the output. In the example above, `-d` and `-v` in the input string are renamed to `description` and `version` in the output object.
 
 ### String input
 

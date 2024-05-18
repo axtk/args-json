@@ -63,11 +63,6 @@ test(parseArgs('--debug --version=1.2.3'), {
 });
 
 test(parseArgs('--debug --parsed-args'), {
-    'debug': true,
-    'parsed-args': true,
-});
-
-test(parseArgs('--debug --parsed-args', {'parsed-args': 'parsedArgs'}), {
     debug: true,
     parsedArgs: true,
 });
@@ -98,10 +93,10 @@ test(parseArgs('-c ./configs/default.json --ttl=1000 -d'), {
     d: true,
 });
 
-test(parseArgs('-c "./configs/default.json" --ttl=1000 -v=1.0.0', {c: 'config'}), {
-    config: './configs/default.json',
+test(parseArgs('-c "./config.json" --ttl=1000 -v=1.0.0', {c: 'config', v: 'version'}), {
+    config: './config.json',
     ttl: 1000,
-    v: '1.0.0',
+    version: '1.0.0',
 });
 
 test(parseArgs('-t "random word" -t test -t 10', {t: 'tags'}), {

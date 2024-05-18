@@ -1,11 +1,20 @@
 export type ArgMap = Record<string, string>;
 
+function toCamelCase(x: string): string {
+    let s = x.replace(/^[-_.\s~+]|[-_.\s~+]$/g, '');
+
+    if (!/[-_.\s~+]/.test(s))
+        return s.slice(0, 1).toLowerCase() + s.slice(1);
+
+    return s.toLowerCase().replace(/[-_.\s~+](\S)/g, (_, match) => match.toUpperCase());
+}
+
 function toKey(x: string | undefined): string | undefined {
     if (x) {
         if (x.startsWith('--') && x.length > 2)
-            return x.slice(2);
+            return toCamelCase(x.slice(2));
         if (x.startsWith('-') && x.length === 2)
-            return x.slice(1);
+            return toCamelCase(x.slice(1));
     }
 }
 
