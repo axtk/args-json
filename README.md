@@ -78,7 +78,7 @@ In a Node environment, `parseArgs()` without parameters parses the node process 
 let args = parseArgs();
 ```
 
-which is equivalent to
+is equivalent to
 
 ```js
 let args = parseArgs(process.argv);
