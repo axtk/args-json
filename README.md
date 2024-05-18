@@ -14,8 +14,8 @@ npm i args-json
 import {parseArgs} from 'args-json';
 
 let args = parseArgs('--config=./config.json -v 1.5.12 -d "lorem ipsum" -i -n=0 --test-value qwe --debug', {
-    d: 'description',
     v: 'version',
+    d: 'description',
 });
 // args = {
 //     config: './config.json',
