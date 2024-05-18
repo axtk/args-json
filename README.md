@@ -13,18 +13,17 @@ npm i args-json
 ```js
 import {parseArgs} from 'args-json';
 
-let args = parseArgs('-i -n=0 --test-value qwe -d "lorem ipsum" --config=./config.json -v 1.5.12 -x true --debug', {
+let args = parseArgs('--config=./config.json -v 1.5.12 -d "lorem ipsum" -i -n=0 --test-value qwe --debug', {
     d: 'description',
     v: 'version',
 });
 // args = {
+//     config: './config.json',
+//     version: '1.5.12',
+//     description: 'lorem ipsum',
 //     i: true,
 //     n: 0,
 //     testValue: 'qwe',
-//     description: 'lorem ipsum',
-//     config: './config.json',
-//     version: '1.5.12',
-//     x: true,
 //     debug: true,
 // };
 ```
