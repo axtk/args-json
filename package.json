@@ -22,6 +22,8 @@
     "args-parser",
     "argv",
     "argv-parser",
+    "cli",
+    "cli-args",
     "json"
   ],
   "author": "axtk",
