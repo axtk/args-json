@@ -13,16 +13,26 @@ function test(actual: unknown, expected: unknown) {
     }
 }
 
-let {'': _cmd, ...processArgs} = parseArgs();
+function trim(args: Record<string, unknown>) {
+    let {'': _unkeyedArgs, ...keyedArgs} = args;
 
-test(processArgs, {
+    return keyedArgs;
+}
+
+test(trim(parseArgs()), {
     test: 1,
 });
 
-let {'': _cmd2, ...processArgs2} = parseArgs(process.argv);
+test(trim(parseArgs({test: 'lorem'})), {
+    lorem: 1,
+});
 
-test(processArgs2, {
+test(trim(parseArgs(process.argv)), {
     test: 1,
+});
+
+test(trim(parseArgs(process.argv, {test: 'ipsum'})), {
+    ipsum: 1,
 });
 
 test(parseArgs('--debug'), {
