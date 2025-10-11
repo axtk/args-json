@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "npm-run-all -s cleanup compile",
-    "cleanup": "node -e \"require('fs').rmSync('dist', {force: true, recursive: true});\"",
+    "cleanup": "node -e \"require('fs').rmSync('dist', { force: true, recursive: true });\"",
     "compile": "npm-run-all -s compile:main compile:tests",
     "compile:main": "esbuild index.ts --bundle --outfile=dist/index.js --platform=neutral --minify",
     "compile:tests": "esbuild tests.ts --bundle --outfile=dist/tests.js --platform=neutral",

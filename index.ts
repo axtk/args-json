@@ -1,154 +1,133 @@
 export type ArgMap = Record<string, string>;
 
 function toCamelCase(x: string): string {
-    let s = x.replace(/^[-_.\s~+]|[-_.\s~+]$/g, '');
+  let s = x.replace(/^[-_.\s~+]|[-_.\s~+]$/g, "");
 
-    if (!/[-_.\s~+]/.test(s))
-        return s.slice(0, 1).toLowerCase() + s.slice(1);
+  if (!/[-_.\s~+]/.test(s)) return s.slice(0, 1).toLowerCase() + s.slice(1);
 
-    return s.toLowerCase().replace(/[-_.\s~+](\S)/g, (_, match) => match.toUpperCase());
+  return s
+    .toLowerCase()
+    .replace(/[-_.\s~+](\S)/g, (_, match) => match.toUpperCase());
 }
 
 function toKey(x: string | undefined): string | undefined {
-    if (x) {
-        if (x.startsWith('--') && x.length > 2)
-            return toCamelCase(x.slice(2));
-        if (x.startsWith('-') && x.length === 2)
-            return toCamelCase(x.slice(1));
-    }
+  if (x) {
+    if (x.startsWith("--") && x.length > 2) return toCamelCase(x.slice(2));
+    if (x.startsWith("-") && x.length === 2) return toCamelCase(x.slice(1));
+  }
 }
 
 function split(x: string): string[] {
-    let words: string[] = [], word = '';
+  let words: string[] = [],
+    word = "";
 
-    let hasOpenSingleQuote = false;
-    let hasOpenDoubleQuote = false;
+  let hasOpenSingleQuote = false;
+  let hasOpenDoubleQuote = false;
 
-    for (let i = 0; i < x.length; i++) {
-        let c = x[i];
+  for (let i = 0; i < x.length; i++) {
+    let c = x[i];
 
-        if (/^\s/.test(c) && !hasOpenSingleQuote && !hasOpenDoubleQuote) {
-            if (word) words.push(word);
-            word = '';
-            continue;
-        }
-
-        if (c === '\'' && x[i - 1] !== '\\')
-            hasOpenSingleQuote = !hasOpenSingleQuote;
-
-        if (c === '"' && x[i - 1] !== '\\')
-            hasOpenDoubleQuote = !hasOpenDoubleQuote;
-
-        word += c;
+    if (/^\s/.test(c) && !hasOpenSingleQuote && !hasOpenDoubleQuote) {
+      if (word) words.push(word);
+      word = "";
+      continue;
     }
 
-    if (word)
-        words.push(word);
+    if (c === "'" && x[i - 1] !== "\\")
+      hasOpenSingleQuote = !hasOpenSingleQuote;
 
-    return words;
+    if (c === '"' && x[i - 1] !== "\\")
+      hasOpenDoubleQuote = !hasOpenDoubleQuote;
+
+    word += c;
+  }
+
+  if (word) words.push(word);
+
+  return words;
 }
 
 function getDefaultInput(): string[] {
-    // eslint-disable-next-line no-constant-binary-expression -- for non-node environments
-    return typeof process === undefined ? [] : process.argv;
+  return typeof process === "undefined" ? [] : process.argv;
 }
 
-export function parseArgs<T extends Record<string, unknown> = Record<string, unknown>>(
-    map?: ArgMap,
-): T;
+export function parseArgs<
+  T extends Record<string, unknown> = Record<string, unknown>,
+>(map?: ArgMap): T;
 
-export function parseArgs<T extends Record<string, unknown> = Record<string, unknown>>(
-    input?: string | string[],
-    map?: ArgMap,
-): T;
+export function parseArgs<
+  T extends Record<string, unknown> = Record<string, unknown>,
+>(input?: string | string[], map?: ArgMap): T;
 
-export function parseArgs<T extends Record<string, unknown> = Record<string, unknown>>(
-    input?: string | string[] | ArgMap,
-    map?: ArgMap,
-): T {
-    let normalizedInput: string[];
-    let normalizedMap: ArgMap | undefined;
+export function parseArgs<
+  T extends Record<string, unknown> = Record<string, unknown>,
+>(input?: string | string[] | ArgMap, map?: ArgMap): T {
+  let normalizedInput: string[];
+  let normalizedMap: ArgMap | undefined;
 
-    if (input === undefined)
-        normalizedInput = getDefaultInput();
-    else if (typeof input === 'string')
-        normalizedInput = split(input);
-    else if (Array.isArray(input))
-        normalizedInput = input.map(x => String(x));
-    else if (input !== null && typeof input === 'object') {
-        normalizedInput = getDefaultInput();
-        normalizedMap = input;
-    }
-    else normalizedInput = [];
+  if (input === undefined) normalizedInput = getDefaultInput();
+  else if (typeof input === "string") normalizedInput = split(input);
+  else if (Array.isArray(input)) normalizedInput = input.map((x) => String(x));
+  else if (input !== null && typeof input === "object") {
+    normalizedInput = getDefaultInput();
+    normalizedMap = input;
+  } else normalizedInput = [];
 
-    normalizedInput = normalizedInput
-        .map(item => {
-            let normalizedItem = item.trim();
-            let k = normalizedItem.indexOf('=');
+  normalizedInput = normalizedInput.flatMap((item) => {
+    let normalizedItem = item.trim();
+    let k = normalizedItem.indexOf("=");
 
-            if (k === -1)
-                return normalizedItem;
+    if (k === -1) return normalizedItem;
 
-            return [
-                normalizedItem.slice(0, k),
-                normalizedItem.slice(k + 1),
-            ];
-        })
-        .flat();
+    return [normalizedItem.slice(0, k), normalizedItem.slice(k + 1)];
+  });
 
-    if (map)
-        normalizedMap = map;
+  if (map) normalizedMap = map;
 
-    let key = '';
-    let parsedArgs: Record<string, unknown> = {};
+  let key = "";
+  let parsedArgs: Record<string, unknown> = {};
 
-    for (let rawValue of normalizedInput) {
-        rawValue = rawValue.trim();
+  for (let rawValue of normalizedInput) {
+    rawValue = rawValue.trim();
 
-        if (rawValue.startsWith('"') && rawValue.endsWith('"'))
-            rawValue = rawValue.slice(1, -1);
-        else if (rawValue.startsWith('\'') && rawValue.endsWith('\''))
-            rawValue = rawValue.slice(1, -1);
+    if (rawValue.startsWith('"') && rawValue.endsWith('"'))
+      rawValue = rawValue.slice(1, -1);
+    else if (rawValue.startsWith("'") && rawValue.endsWith("'"))
+      rawValue = rawValue.slice(1, -1);
 
-        let parsedKey = toKey(rawValue);
+    let parsedKey = toKey(rawValue);
 
-        if (parsedKey !== undefined) {
-            let nextKey = normalizedMap?.[parsedKey] ?? parsedKey;
+    if (parsedKey !== undefined) {
+      let nextKey = normalizedMap?.[parsedKey] ?? parsedKey;
 
-            if (key && nextKey !== key && parsedArgs[key] === undefined)
-                parsedArgs[key] = true;
-
-            key = nextKey;
-            continue;
-        }
-
-        let parsedValue;
-
-        if (rawValue) {
-            try {
-                parsedValue = JSON.parse(rawValue);
-            }
-            catch {
-                parsedValue = rawValue;
-            }
-        }
-        else parsedValue = true;
-
-        let prevValue = parsedArgs[key];
-        let value;
-
-        if (prevValue === undefined)
-            value = parsedValue;
-        else if (Array.isArray(prevValue))
-            value = [...prevValue, parsedValue];
-        else
-            value = [prevValue, parsedValue];
-
-        parsedArgs[key] = value;
-    }
-
-    if (key && parsedArgs[key] === undefined)
+      if (key && nextKey !== key && parsedArgs[key] === undefined)
         parsedArgs[key] = true;
 
-    return parsedArgs as T;
+      key = nextKey;
+      continue;
+    }
+
+    let parsedValue: unknown;
+
+    if (rawValue) {
+      try {
+        parsedValue = JSON.parse(rawValue);
+      } catch {
+        parsedValue = rawValue;
+      }
+    } else parsedValue = true;
+
+    let prevValue = parsedArgs[key];
+    let value: unknown;
+
+    if (prevValue === undefined) value = parsedValue;
+    else if (Array.isArray(prevValue)) value = [...prevValue, parsedValue];
+    else value = [prevValue, parsedValue];
+
+    parsedArgs[key] = value;
+  }
+
+  if (key && parsedArgs[key] === undefined) parsedArgs[key] = true;
+
+  return parsedArgs as T;
 }
