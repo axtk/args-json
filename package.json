@@ -31,7 +31,7 @@
   "author": "axtk",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^20.12.12",
+    "@types/node": "^24.7.2",
     "typescript": "^5.9.3"
   }
 }
