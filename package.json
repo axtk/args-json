@@ -10,7 +10,8 @@
     "compile:main": "esbuild index.ts --bundle --outfile=dist/index.js --platform=neutral --minify",
     "compile:tests": "esbuild tests.ts --bundle --outfile=dist/tests.js --platform=neutral",
     "prepublishOnly": "npm-run-all -s build test",
-    "preversion": "npm-run-all -s build test",
+    "preversion": "npm-run-all -s build shape test",
+    "shape": "npx codeshape",
     "test": "node dist/tests.js --test=1"
   },
   "repository": {
