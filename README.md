@@ -2,29 +2,25 @@
 
 *Zero-dependency typed command-line argument parser*
 
-## Installation
+Installation: `npm i args-json`
 
-```
-npm i args-json
-```
-
-## Usage
+## String input
 
 ```js
-import {parseArgs} from 'args-json';
+import { parseArgs } from "args-json";
 
-let args = parseArgs('--config=./config.json -v 1.5.12 -d "lorem ipsum" -i -n=0 --test-value qwe --debug', {
-    v: 'version',
-    d: 'description',
+let args = parseArgs("--config=./config.json -v 1.5.12 -d \"lorem ipsum\" -i -n=0 --test-value qwe --debug", {
+  v: "version",
+  d: "description",
 });
 // args = {
-//     config: './config.json',
-//     version: '1.5.12',
-//     description: 'lorem ipsum',
-//     i: true,
-//     n: 0,
-//     testValue: 'qwe',
-//     debug: true,
+//   config: "./config.json",
+//   version: "1.5.12",
+//   description: "lorem ipsum",
+//   i: true,
+//   n: 0,
+//   testValue: "qwe",
+//   debug: true,
 // };
 ```
 
@@ -32,45 +28,45 @@ Note that keys and values can be separated from each other either with a space o
 
 The second parameter is optional. It is a way to rename argument keys in the output. In the example above, `-d` and `-v` in the input string are renamed to `description` and `version` in the output object.
 
-### String input
+Other examples:
 
 ```js
-let args = parseArgs('--config ./configs/default.json --debug');
-// {config: './configs/default.json', debug: true}
+let args = parseArgs("--config ./configs/default.json --debug");
+// { config: "./configs/default.json", debug: true }
 
 if (args.debug)
-    console.log(args.config);
+  console.log(args.config);
 ```
 
 The first line is also equivalent to:
 
 ```js
-let args = parseArgs('--config "./configs/default.json" --debug');
+let args = parseArgs("--config \"./configs/default.json\" --debug");
 ```
 
 or
 
 ```js
-let args = parseArgs('--config=./configs/default.json --debug');
+let args = parseArgs("--config=./configs/default.json --debug");
 ```
 
 or
 
 ```js
-let args = parseArgs('--config="./configs/default.json" --debug');
+let args = parseArgs("--config=\"./configs/default.json\" --debug");
 ```
 
-### String array input
+## String array input
 
 ```js
-let args = parseArgs(['--config', './configs/default.json', '--debug']);
-// {config: './configs/default.json', debug: true}
+let args = parseArgs(["--config", "./configs/default.json", "--debug"]);
+// { config: "./configs/default.json", debug: true }
 
 if (args.debug)
-    console.log(args.config);
+  console.log(args.config);
 ```
 
-### Node process arguments
+## Node process arguments
 
 In a Node environment, `parseArgs()` without parameters parses the node process arguments.
 
@@ -84,39 +80,39 @@ is equivalent to
 let args = parseArgs(process.argv);
 ```
 
-### Key mapping
+## Key mapping
 
 ```js
-let args = parseArgs('-c ./configs/default.json --debug', {c: 'config'});
-// {config: './configs/default.json', debug: true}
+let args = parseArgs("-c ./configs/default.json --debug", { c: "config" });
+// { config: "./configs/default.json", debug: true }
 
 if (args.debug)
-    console.log(args.config);
+  console.log(args.config);
 ```
 
 As specified with the second parameter of `parseArgs()`, `-c` is mapped to `config` in the output.
 
-### Value parsing
+## Value parsing
 
 Values are `JSON.parse`d if they are parsable.
 
 ```js
-let args = parseArgs('-d \'{"x":10}\' -i 0 -n=3 -c ./config.json');
-// {d: {x: 10}, i: 0, n: 3, c: './config.json'}
+let args = parseArgs("-d \"{\"x\":10}\" -i 0 -n=3 -c ./config.json");
+// { d: { x: 10 }, i: 0, n: 3, c: "./config.json" }
 ```
 
-### Typing
+## Typing
 
 The output type can be specified by providing a generic type to `parseArgs<T>()`.
 
 ```ts
 type CustomShape = {
-    level?: number;
-    debug?: boolean;
+  level?: number;
+  debug?: boolean;
 };
 
-let args = parseArgs<CustomShape>('--level=0 --debug');
+let args = parseArgs<CustomShape>("--level=0 --debug");
 
 if (args.debug)
-    console.log(`Level: ${args.level}`);
+  console.log(`Level: ${args.level}`);
 ```
