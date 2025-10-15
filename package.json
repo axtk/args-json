@@ -30,7 +30,7 @@
     "json"
   ],
   "author": "axtk",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^24.7.2",
     "typescript": "^5.9.3"
