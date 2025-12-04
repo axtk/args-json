@@ -2,7 +2,7 @@
   "include": ["./index.ts", "./tests.ts"],
   "compilerOptions": {
     "declaration": true,
-    "noEmit": true,
+    "emitDeclarationOnly": true,
     "lib": ["ESNext"],
     "target": "esnext",
     "outDir": "dist",
