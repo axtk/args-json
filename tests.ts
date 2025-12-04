@@ -1,4 +1,4 @@
-import { parseArgs } from ".";
+import { parseArgs } from "./index.ts";
 
 let k = 0;
 

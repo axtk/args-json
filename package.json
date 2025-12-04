@@ -3,18 +3,19 @@
   "version": "1.2.6",
   "description": "Zero-dependency typed command-line argument parser",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "npx npm-run-all cleanup compile",
+    "build": "npx npm-run-all cleanup compile types",
     "cleanup": "node -e \"require('fs').rmSync('dist', { force: true, recursive: true });\"",
-    "compile": "npx npm-run-all compile:main compile:tests",
-    "compile:main": "npx esbuild index.ts --bundle --outfile=dist/index.js --platform=neutral",
-    "compile:tests": "npx esbuild tests.ts --bundle --outfile=dist/tests.js --platform=neutral",
+    "compile": "npx npm-run-all compile-main compile-tests",
+    "compile-main": "npx esbuild index.ts --bundle --outfile=dist/index.js --platform=neutral",
+    "compile-tests": "npx esbuild tests.ts --bundle --outfile=dist/tests.js --platform=neutral",
     "prepublishOnly": "npx npm-run-all build test",
-    "preversion": "npx npm-run-all typecheck shape build test",
-    "shape": "npx codeshape",
+    "preversion": "npx npm-run-all shape build test",
+    "shape": "npx codeshape --typecheck",
     "test": "node dist/tests.js --test=1",
-    "typecheck": "tsc --noEmit"
+    "types": "tsc --emitDeclarationOnly"
   },
   "repository": {
     "type": "git",
