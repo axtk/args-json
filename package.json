@@ -2,20 +2,13 @@
   "name": "args-json",
   "version": "1.2.8",
   "description": "Zero-dependency typed command-line argument parser",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "npx npm-run-all cleanup compile types",
-    "cleanup": "node -e \"require('fs').rmSync('dist', { force: true, recursive: true });\"",
-    "compile": "npx npm-run-all compile-main compile-tests",
-    "compile-main": "npx esbuild index.ts --bundle --outfile=dist/index.js --platform=neutral",
-    "compile-tests": "npx esbuild tests.ts --bundle --outfile=dist/tests.js --platform=neutral",
-    "prepublishOnly": "npx npm-run-all build test",
-    "preversion": "npx npm-run-all shape build test",
-    "shape": "npx codeshape --typecheck",
-    "test": "node dist/tests.js --test=1",
-    "types": "tsc --emitDeclarationOnly"
+    "preversion": "npx codeshape",
+    "test": "node tests.ts --test=1"
   },
   "repository": {
     "type": "git",
@@ -33,7 +26,6 @@
   "author": "axtk",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^24.7.2",
-    "typescript": "^5.9.3"
+    "@types/node": "^25.0.0"
   }
 }
