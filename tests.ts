@@ -55,6 +55,13 @@ test(parseArgs("test plain args"), {
   "": ["test", "plain", "args"],
 });
 
+test(parseArgs("unkeyed args --debug -x 0 -y 1"), {
+  "": ["unkeyed", "args"],
+  debug: true,
+  x: 0,
+  y: 1,
+});
+
 test(parseArgs("--debug -v", { v: "version" }), {
   debug: true,
   version: true,
