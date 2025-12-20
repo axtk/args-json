@@ -4,14 +4,17 @@ import { parseArgs } from "./index.ts";
 let k = 0;
 
 function test(actual: unknown, expected: unknown) {
-  console.log(`00${++k}`.slice(-3));
+  let n = `00${++k}`.slice(-3);
 
   if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+    console.log(n);
     console.log(`Expected: ${JSON.stringify(expected, null, 2)}`);
     console.log(`Actual: ${JSON.stringify(actual, null, 2)}`);
 
     throw new Error("Unexpected value");
   }
+
+  console.log(`${n} Passed`);
 }
 
 function trim(args: Record<string, unknown>) {
@@ -172,4 +175,4 @@ test(parsedArgs, {
 
 test(parsedArgs.config, "./configs/default.json");
 
-console.log("PASSED");
+console.log("\nPassed");
