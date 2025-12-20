@@ -48,6 +48,10 @@ test(parseArgs("-debug"), {
   "": "-debug",
 });
 
+test(parseArgs("test plain args"), {
+  "": ["test", "plain", "args"],
+});
+
 test(parseArgs("--debug -v", { v: "version" }), {
   debug: true,
   version: true,
