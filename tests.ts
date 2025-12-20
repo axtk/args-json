@@ -48,7 +48,7 @@ test(parseArgs("-d", { d: "debug" }), {
 });
 
 test(parseArgs("-debug"), {
-  "": "-debug",
+  "": ["-debug"],
 });
 
 test(parseArgs("test plain args"), {

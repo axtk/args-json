@@ -120,7 +120,7 @@ export function parseArgs<
     let prevValue = parsedArgs[key];
     let value: unknown;
 
-    if (prevValue === undefined) value = parsedValue;
+    if (prevValue === undefined) value = key === "" ? [parsedValue] : parsedValue;
     else if (Array.isArray(prevValue)) value = [...prevValue, parsedValue];
     else value = [prevValue, parsedValue];
 
