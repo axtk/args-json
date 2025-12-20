@@ -1,3 +1,4 @@
+// Run: `node tests.ts --test=1`
 import { parseArgs } from "./index.ts";
 
 let k = 0;
