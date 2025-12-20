@@ -1,6 +1,8 @@
 # args-json
 
-*Zero-dependency typed command-line argument parser*
+Zero-dependency descriptively typed command-line argument parser
+
+[![npm](https://img.shields.io/npm/v/args-json?labelColor=345&color=46e)](https://www.npmjs.com/package/args-json) ![Lightweight](https://img.shields.io/bundlephobia/minzip/args-json?label=minzip&labelColor=345&color=46e)
 
 Installation: `npm i args-json`
 
@@ -101,9 +103,18 @@ let args = parseArgs("-d \"{\"x\":10}\" -i 0 -n=3 -c ./config.json");
 // { d: { x: 10 }, i: 0, n: 3, c: "./config.json" }
 ```
 
-## Typing
+## Unkeyed values
 
-The output type can be specified by providing a generic type to `parseArgs<T>()`.
+Values that aren't preceded by a dashed key (like `-x` or `--xxx`) are collected in an array under an empty key entry.
+
+```js
+let args = parseArgs("unkeyed args --debug -x 0 -y 1");
+// { "": ["unkeyed", "args"], debug: true, x: 0, y: 1 }
+```
+
+## Descriptive typing
+
+The output type can be descriptively specified, without validation, by providing a generic type to `parseArgs<T>()`.
 
 ```ts
 type CustomShape = {
