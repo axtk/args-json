@@ -2,10 +2,6 @@
 
 Zero-dependency descriptively typed command-line argument parser
 
-[![npm](https://img.shields.io/npm/v/args-json?labelColor=345&color=46e)](https://www.npmjs.com/package/args-json) ![Lightweight](https://img.shields.io/bundlephobia/minzip/args-json?label=minzip&labelColor=345&color=46e)
-
-Installation: `npm i args-json`
-
 ## String input
 
 ```js
