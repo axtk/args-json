@@ -17,6 +17,10 @@ function toKey(x: string | undefined): string | undefined {
   }
 }
 
+function isKey(x: string | undefined) {
+  return Boolean(toKey(x));
+}
+
 function split(x: string): string[] {
   let words: string[] = [],
     word = "";
@@ -79,7 +83,14 @@ export function parseArgs<
 
     if (k === -1) return normalizedItem;
 
-    return [normalizedItem.slice(0, k), normalizedItem.slice(k + 1)];
+    let key = normalizedItem.slice(0, k);
+    let value = normalizedItem.slice(k + 1);
+
+    // Make sure the entire `normalizedItem` isn't a value containing "="
+    // that shouldn't be split into a key and a value
+    if (!isKey(key)) return normalizedItem;
+
+    return [key, value];
   });
 
   if (map) normalizedMap = map;

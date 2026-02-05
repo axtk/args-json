@@ -134,6 +134,10 @@ test(parseArgs('-t "random word" -t test -t 10', { t: "tags" }), {
   tags: ["random word", "test", 10],
 });
 
+test(parseArgs('--content "<a href=\"/\">Home</a>"'), {
+  content: '<a href="/">Home</a>',
+});
+
 test(parseArgs('-d \'{"data":{"id":3,"tags":["test","random"]}}\' --debug'), {
   d: {
     data: {
