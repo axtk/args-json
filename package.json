@@ -7,7 +7,8 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "preversion": "npx codeshape",
+    "preversion": "npx npm-run-all shape test",
+    "shape": "npx codeshape",
     "test": "node tests.ts --test=1"
   },
   "repository": {
