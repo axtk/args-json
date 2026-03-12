@@ -26,6 +26,6 @@
   "author": "axtk",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^25.0.0"
+    "@types/node": "^25.5.0"
   }
 }
