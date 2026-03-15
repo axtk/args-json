@@ -8,8 +8,7 @@ export function getArgValues(argName: string, fallback?: string[]) {
   let k = argv.indexOf(argName);
   let values: string[] = [];
 
-  while (k > 1 && argv[k + 1] && !isKey(argv[k + 1]))
-    values.push(argv[++k]);
+  while (k > 1 && argv[k + 1] && !isKey(argv[k + 1])) values.push(argv[++k]);
 
   return values.length === 0 ? fallback : values;
 }
