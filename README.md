@@ -2,7 +2,9 @@
 
 Zero-dependency descriptively typed command-line argument parser
 
-## String input
+## parseArgs
+
+### String input
 
 ```js
 import { parseArgs } from "args-json";
@@ -54,7 +56,7 @@ or
 let args = parseArgs("--config=\"./configs/default.json\" --debug");
 ```
 
-## String array input
+### String array input
 
 ```js
 let args = parseArgs(["--config", "./configs/default.json", "--debug"]);
@@ -64,7 +66,7 @@ if (args.debug)
   console.log(args.config);
 ```
 
-## Node process arguments
+### Node process arguments
 
 In a Node environment, `parseArgs()` without parameters parses the node process arguments.
 
@@ -78,7 +80,7 @@ is equivalent to
 let args = parseArgs(process.argv);
 ```
 
-## Key mapping
+### Key mapping
 
 ```js
 let args = parseArgs("-c ./configs/default.json --debug", { c: "config" });
@@ -90,7 +92,7 @@ if (args.debug)
 
 As specified with the second parameter of `parseArgs()`, `-c` is mapped to `config` in the output.
 
-## Value parsing
+### Value parsing
 
 Values are `JSON.parse`d if they are parsable.
 
@@ -99,7 +101,7 @@ let args = parseArgs("-d \"{\"x\":10}\" -i 0 -n=3 -c ./config.json");
 // { d: { x: 10 }, i: 0, n: 3, c: "./config.json" }
 ```
 
-## Unkeyed values
+### Unkeyed values
 
 Values that aren't preceded by a dashed key (like `-x` or `--xxx`) are collected in an array under an empty key entry.
 
@@ -108,7 +110,7 @@ let args = parseArgs("unkeyed args --debug -x 0 -y 1");
 // { "": ["unkeyed", "args"], debug: true, x: 0, y: 1 }
 ```
 
-## Descriptive typing
+### Descriptive typing
 
 The output type can be descriptively specified, without validation, by providing a generic type to `parseArgs<T>()`.
 
@@ -120,6 +122,22 @@ type CustomShape = {
 
 let args = parseArgs<CustomShape>("--level=0 --debug");
 
-if (args.debug)
-  console.log(`Level: ${args.level}`);
+if (args.debug) console.log(`Level: ${args.level}`);
 ```
+
+## Args
+
+Use an `Args` class instance to facilitate access to named command line arguments:
+
+```js
+import { Args } from "args-json";
+
+let args = new Args(["--key", "value", "--paths", "./x", "./y"]);
+
+args.hasKey("--key") // true
+args.hasKey("--arg") // false
+args.getValue("--key") // "value"
+args.getValues("--paths") // ["./x", "./y"]
+```
+
+Without an argument array, `new Args()` is equivalent to `new Args(process.argv.slice(2))`. An `Args` object initialized without arguments can also be directly imported with `import { args } from "args-json";`.
