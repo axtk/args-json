@@ -1,6 +1,6 @@
 {
   "name": "args-json",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "Zero-dependency descriptively typed command-line argument parser",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
