@@ -32,7 +32,8 @@ export class Args {
     for (let k of keys) {
       let i = args.indexOf(k);
 
-      while (i !== -1 && args[i + 1] && !isKey(args[i + 1])) values.push(args[++i]);
+      while (i !== -1 && args[i + 1] && !isKey(args[i + 1]))
+        values.push(args[++i]);
     }
 
     return values.length === 0 ? fallback : values;
