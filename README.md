@@ -2,6 +2,8 @@
 
 Zero-dependency descriptively typed command-line argument parser
 
+Contents: [parseArgs](#parseargs) · [Args](#args)
+
 ## parseArgs
 
 ### String input
