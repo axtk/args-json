@@ -1,3 +1,4 @@
+export * from "./src/Args.ts";
 export * from "./src/getValue.ts";
 export * from "./src/getValues.ts";
 export * from "./src/hasKey.ts";

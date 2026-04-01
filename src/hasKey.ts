@@ -1,5 +1,5 @@
-import { isKey } from "./isKey.ts";
+import { Args } from "./Args.ts";
 
 export function hasKey(x: string) {
-  return isKey(x) && process.argv.indexOf(x) > 1;
+  return new Args().hasKey(x);
 }
