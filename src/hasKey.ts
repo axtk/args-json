@@ -1,5 +1,5 @@
-import { Args } from "./Args.ts";
+import { args } from "./const/args.ts";
 
 export function hasKey(x: string) {
-  return new Args().hasKey(x);
+  return args.hasKey(x);
 }
