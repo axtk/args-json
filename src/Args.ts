@@ -5,20 +5,23 @@ import { isOn } from "./isOn.ts";
 export class Args {
   _input: string[];
   constructor(input?: string[]) {
-    this._input = (input ?? process.argv.slice(2)).reduce<string[]>((acc, s) => {
-      // Split `"--key=value"` into "--key" and "value"
-      if (s.startsWith("-") && s.includes("=")) {
-        let key = s.slice(0, s.indexOf("="));
+    this._input = (input ?? process.argv.slice(2)).reduce<string[]>(
+      (acc, s) => {
+        // Split `"--key=value"` into "--key" and "value"
+        if (s.startsWith("-") && s.includes("=")) {
+          let key = s.slice(0, s.indexOf("="));
 
-        if (isKey(key)) {
-          acc.push(key, s.slice(key.length + 1));
-          return acc;
+          if (isKey(key)) {
+            acc.push(key, s.slice(key.length + 1));
+            return acc;
+          }
         }
-      }
 
-      acc.push(s);
-      return acc;
-    }, []);
+        acc.push(s);
+        return acc;
+      },
+      [],
+    );
   }
   hasKey(x: string) {
     return isKey(x) && this._input.includes(x);
@@ -27,7 +30,10 @@ export class Args {
     let args = this._input;
     let k = args.indexOf(key);
 
-    return k !== -1 && (k === args.length - 1 || isKey(args[k + 1]) || isOn(args[k + 1]));
+    return (
+      k !== -1 &&
+      (k === args.length - 1 || isKey(args[k + 1]) || isOn(args[k + 1]))
+    );
   }
   isOff(key: string) {
     let args = this._input;
