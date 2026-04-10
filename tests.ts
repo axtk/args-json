@@ -188,6 +188,15 @@ test(parsedArgs, {
 
 test(parsedArgs.config, "./configs/default.json");
 
+console.log("\nArgs");
+
+test(new Args(["--test", "x"]).getValue("--test"), "x");
+test(new Args(["--test=x"]).getValue("--test"), "x");
+test(new Args(["--test", "x"])._input, ["--test", "x"]);
+test(new Args(["--test=x"])._input, ["--test", "x"]);
+test(new Args(["--test", "x=y"])._input, ["--test", "x=y"]);
+test(new Args(["x=y"])._input, ["x=y"]);
+
 type Params2 = {
   debug?: On | Off;
 };
@@ -206,10 +215,14 @@ test(new Args(["--debug"]).isOn("--debug"), true);
 test(new Args(["--debug", "--test"]).isOn("--debug"), true);
 test(new Args(["--debug", "1"]).isOn("--debug"), true);
 test(new Args(["--debug", "on"]).isOn("--debug"), true);
+test(new Args(["--debug=1"]).isOn("--debug"), true);
+test(new Args(["--debug=on"]).isOn("--debug"), true);
 
 test(new Args([""]).isOn("--debug"), false);
 test(new Args(["--debug", "0"]).isOn("--debug"), false);
 test(new Args(["--debug", "off"]).isOn("--debug"), false);
+test(new Args(["--debug=0"]).isOn("--debug"), false);
+test(new Args(["--debug=off"]).isOn("--debug"), false);
 
 console.log("\nisOff");
 
@@ -221,5 +234,7 @@ test(new Args([""]).isOff("--debug"), true);
 test(new Args(["--debug", "--test"]).isOff("--debug"), false);
 test(new Args(["--debug", "0"]).isOff("--debug"), true);
 test(new Args(["--debug", "off"]).isOff("--debug"), true);
+test(new Args(["--debug=0"]).isOff("--debug"), true);
+test(new Args(["--debug=off"]).isOff("--debug"), true);
 
 console.log("\nPassed");

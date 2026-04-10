@@ -3,21 +3,34 @@ import { isOff } from "./isOff.ts";
 import { isOn } from "./isOn.ts";
 
 export class Args {
-  input: string[];
+  _input: string[];
   constructor(input?: string[]) {
-    this.input = input ?? process.argv.slice(2);
+    this._input = (input ?? process.argv.slice(2)).reduce<string[]>((acc, s) => {
+      // Split `"--key=value"` into "--key" and "value"
+      if (s.startsWith("-") && s.includes("=")) {
+        let key = s.slice(0, s.indexOf("="));
+
+        if (isKey(key)) {
+          acc.push(key, s.slice(key.length + 1));
+          return acc;
+        }
+      }
+
+      acc.push(s);
+      return acc;
+    }, []);
   }
   hasKey(x: string) {
-    return isKey(x) && this.input.includes(x);
+    return isKey(x) && this._input.includes(x);
   }
   isOn(key: string) {
-    let args = this.input;
+    let args = this._input;
     let k = args.indexOf(key);
 
     return k !== -1 && (k === args.length - 1 || isKey(args[k + 1]) || isOn(args[k + 1]));
   }
   isOff(key: string) {
-    let args = this.input;
+    let args = this._input;
     let k = args.indexOf(key);
 
     return k === -1 || isOff(args[k + 1]);
@@ -25,7 +38,7 @@ export class Args {
   getValue(key: string | string[], fallback: string): string;
   getValue(key: string | string[]): string | undefined;
   getValue(key: string | string[], fallback?: string) {
-    let args = this.input;
+    let args = this._input;
     let keys = Array.isArray(key) ? key : [key];
 
     for (let k of keys) {
@@ -39,7 +52,7 @@ export class Args {
   getValues(key: string | string[], fallback: string[]): string[];
   getValues(key: string | string[]): string[] | undefined;
   getValues(key: string | string[], fallback?: string[]) {
-    let args = this.input;
+    let args = this._input;
     let keys = Array.isArray(key) ? key : [key];
     let values: string[] = [];
 
