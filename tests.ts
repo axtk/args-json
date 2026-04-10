@@ -1,5 +1,13 @@
 // Run: `node tests.ts --test=1`
-import { Args, isExplicitlyOff, isOff, isOn, type Off, type On, parseArgs } from "./index.ts";
+import {
+  Args,
+  isExplicitlyOff,
+  isOff,
+  isOn,
+  type Off,
+  type On,
+  parseArgs,
+} from "./index.ts";
 
 let k = 0;
 
