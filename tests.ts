@@ -1,5 +1,5 @@
 // Run: `node tests.ts --test=1`
-import { parseArgs } from "./index.ts";
+import { Args, isOff, isOn, type Off, type On, parseArgs } from "./index.ts";
 
 let k = 0;
 
@@ -38,6 +38,8 @@ test(trim(parseArgs(process.argv)), {
 test(trim(parseArgs(process.argv, { test: "ipsum" })), {
   ipsum: 1,
 });
+
+test(parseArgs(""), {});
 
 test(parseArgs("--debug"), {
   debug: true,
@@ -168,12 +170,12 @@ test(parseArgs("-d '{\"x\":10}' -i 0 -n=3 -c ./config.json"), {
   c: "./config.json",
 });
 
-type Args = {
+type Params1 = {
   config?: string;
   debug?: boolean;
 };
 
-let parsedArgs = parseArgs<Args>([
+let parsedArgs = parseArgs<Params1>([
   "--config",
   "./configs/default.json",
   "--debug",
@@ -185,5 +187,39 @@ test(parsedArgs, {
 });
 
 test(parsedArgs.config, "./configs/default.json");
+
+type Params2 = {
+  debug?: On | Off;
+};
+
+console.log("\nisOn");
+
+test(isOn(parseArgs<Params2>("--debug").debug), true);
+test(isOn(parseArgs<Params2>("--debug=1").debug), true);
+test(isOn(parseArgs<Params2>("--debug=on").debug), true);
+
+test(isOn(parseArgs<Params2>("").debug), false);
+test(isOn(parseArgs<Params2>("--debug=0").debug), false);
+test(isOn(parseArgs<Params2>("--debug=off").debug), false);
+
+test(new Args(["--debug"]).isOn("--debug"), true);
+test(new Args(["--debug", "--test"]).isOn("--debug"), true);
+test(new Args(["--debug", "1"]).isOn("--debug"), true);
+test(new Args(["--debug", "on"]).isOn("--debug"), true);
+
+test(new Args([""]).isOn("--debug"), false);
+test(new Args(["--debug", "0"]).isOn("--debug"), false);
+test(new Args(["--debug", "off"]).isOn("--debug"), false);
+
+console.log("\nisOff");
+
+test(isOff(parseArgs<Params2>("").debug), true);
+test(isOff(parseArgs<Params2>("--debug=0").debug), true);
+test(isOff(parseArgs<Params2>("--debug=off").debug), true);
+
+test(new Args([""]).isOff("--debug"), true);
+test(new Args(["--debug", "--test"]).isOff("--debug"), false);
+test(new Args(["--debug", "0"]).isOff("--debug"), true);
+test(new Args(["--debug", "off"]).isOff("--debug"), true);
 
 console.log("\nPassed");

@@ -1,4 +1,6 @@
 import { isKey } from "./isKey.ts";
+import { isOff } from "./isOff.ts";
+import { isOn } from "./isOn.ts";
 
 export class Args {
   input: string[];
@@ -7,6 +9,18 @@ export class Args {
   }
   hasKey(x: string) {
     return isKey(x) && this.input.includes(x);
+  }
+  isOn(key: string) {
+    let args = this.input;
+    let k = args.indexOf(key);
+
+    return k !== -1 && (k === args.length - 1 || isKey(args[k + 1]) || isOn(args[k + 1]));
+  }
+  isOff(key: string) {
+    let args = this.input;
+    let k = args.indexOf(key);
+
+    return k === -1 || isOff(args[k + 1]);
   }
   getValue(key: string | string[], fallback: string): string;
   getValue(key: string | string[]): string | undefined;

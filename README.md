@@ -2,7 +2,7 @@
 
 Zero-dependency descriptively typed command-line argument parser
 
-Contents: [parseArgs](#parseargs) · [Args](#args)
+Contents: [parseArgs](#parseargs) · [Args](#args) · [isOn / isOff](#ison--isoff)
 
 ## parseArgs
 
@@ -11,10 +11,13 @@ Contents: [parseArgs](#parseargs) · [Args](#args)
 ```js
 import { parseArgs } from "args-json";
 
-let args = parseArgs("--config=./config.json -v 1.5.12 -d \"lorem ipsum\" -i -n=0 --test-value qwe --debug", {
-  v: "version",
-  d: "description",
-});
+let args = parseArgs(
+  "--config=./config.json -v 1.5.12 -d \"lorem ipsum\" -i -n=0 --test-value qwe --debug",
+  {
+    v: "version",
+    d: "description",
+  }
+);
 // args = {
 //   config: "./config.json",
 //   version: "1.5.12",
@@ -143,3 +146,37 @@ args.getValues("--paths") // ["./x", "./y"]
 ```
 
 Without an argument array, `new Args()` is equivalent to `new Args(process.argv.slice(2))`. An `Args` object initialized without arguments can also be directly imported with `import { args } from "args-json";`.
+
+## isOn / isOff
+
+Use `isOn(x)` and `isOff(x)` to check whether a parameter value is `true`, `1`, `"on"` or `false`, `0`, `"off"`, `null`, `undefined`.
+
+```ts
+import { parseArgs, isOn, isOff, type On, type Off } from "args-json";
+
+type Params = {
+  debug?: On | Off;
+};
+
+// isOn
+isOn(parseArgs<Params>("--debug").debug) // true
+isOn(parseArgs<Params>("--debug=1").debug) // true
+isOn(parseArgs<Params>("--debug=on").debug) // true
+
+isOn(parseArgs<Params>("").debug) // false
+isOn(parseArgs<Params>("--debug=0").debug) // false
+isOn(parseArgs<Params>("--debug=off").debug) // false
+
+new Args(["--debug"]).isOn("--debug") // true
+new Args(["--debug", "1"]).isOn("--debug") // true
+new Args(["--debug", "on"]).isOn("--debug") // true
+
+// isOff
+isOff(parseArgs<Params>("").debug) // true
+isOff(parseArgs<Params>("--debug=0").debug) // true
+isOff(parseArgs<Params>("--debug=off").debug) // true
+
+new Args([""]).isOff("--debug") // true
+new Args(["--debug", "0"]).isOff("--debug") // true
+new Args(["--debug", "off"]).isOff("--debug") // true
+```
