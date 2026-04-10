@@ -1,5 +1,5 @@
 // Run: `node tests.ts --test=1`
-import { Args, isOff, isOn, type Off, type On, parseArgs } from "./index.ts";
+import { Args, isExplicitlyOff, isOff, isOn, type Off, type On, parseArgs } from "./index.ts";
 
 let k = 0;
 
@@ -236,5 +236,18 @@ test(new Args(["--debug", "0"]).isOff("--debug"), true);
 test(new Args(["--debug", "off"]).isOff("--debug"), true);
 test(new Args(["--debug=0"]).isOff("--debug"), true);
 test(new Args(["--debug=off"]).isOff("--debug"), true);
+
+console.log("\nisExplicitlyOff");
+
+test(isExplicitlyOff(parseArgs<Params2>("").debug), false);
+test(isExplicitlyOff(parseArgs<Params2>("--debug=0").debug), true);
+test(isExplicitlyOff(parseArgs<Params2>("--debug=off").debug), true);
+
+test(new Args([""]).isExplicitlyOff("--debug"), false);
+test(new Args(["--debug", "--test"]).isExplicitlyOff("--debug"), false);
+test(new Args(["--debug", "0"]).isExplicitlyOff("--debug"), true);
+test(new Args(["--debug", "off"]).isExplicitlyOff("--debug"), true);
+test(new Args(["--debug=0"]).isExplicitlyOff("--debug"), true);
+test(new Args(["--debug=off"]).isExplicitlyOff("--debug"), true);
 
 console.log("\nPassed");

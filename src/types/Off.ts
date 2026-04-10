@@ -1,1 +1,1 @@
-export type Off = false | 0 | null | undefined | "false" | "0" | "off";
+export type Off = false | 0 | null | undefined | "0" | "false" | "undefined" | "off";

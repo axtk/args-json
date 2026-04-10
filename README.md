@@ -2,7 +2,7 @@
 
 Zero-dependency descriptively typed command-line argument parser
 
-Contents: [parseArgs](#parseargs) · [Args](#args) · [isOn / isOff](#ison--isoff)
+Contents: [parseArgs](#parseargs) · [Args](#args) · [isOn / isOff / isExplicitlyOff](#ison--isoff--isexplicitlyoff)
 
 ## parseArgs
 
@@ -147,7 +147,7 @@ args.getValues("--paths") // ["./x", "./y"]
 
 Without an argument array, `new Args()` is equivalent to `new Args(process.argv.slice(2))`. An `Args` object initialized without arguments can also be directly imported with `import { args } from "args-json";`.
 
-## isOn / isOff
+## isOn / isOff / isExplicitlyOff
 
 Use `isOn(x)` and `isOff(x)` to check whether a parameter value is `true`, `1`, `"on"` or `false`, `0`, `"off"`, `null`, `undefined`.
 
@@ -179,4 +179,18 @@ isOff(parseArgs<Params>("--debug=off").debug) // true
 new Args([""]).isOff("--debug") // true
 new Args(["--debug", "0"]).isOff("--debug") // true
 new Args(["--debug", "off"]).isOff("--debug") // true
+```
+
+Note the difference between `isOff(x)` and `isExplicitlyOff(x)`: `isExplicitlyOff(x)` results in `true` if `x` is present and it's explicitly a turn-off value, while `isOff(x)` returns `true` if `x` is omitted, too.
+
+```ts
+import { isExplicitlyOff, isOff } from "args-json";
+
+isOff(parseArgs<Params>("--debug=off").debug) // true
+isOff(parseArgs<Params>("--debug=0").debug) // true
+isOff(parseArgs<Params>("").debug) // true
+
+isExplicitlyOff(parseArgs<Params>("--debug=off").debug) // true
+isExplicitlyOff(parseArgs<Params>("--debug=0").debug) // true
+isExplicitlyOff(parseArgs<Params>("").debug) // false
 ```

@@ -1,3 +1,4 @@
+import { isExplicitlyOff } from "./isExplicitlyOff.ts";
 import { isKey } from "./isKey.ts";
 import { isOff } from "./isOff.ts";
 import { isOn } from "./isOn.ts";
@@ -40,6 +41,12 @@ export class Args {
     let k = args.indexOf(key);
 
     return k === -1 || isOff(args[k + 1]);
+  }
+  isExplicitlyOff(key: string) {
+    let args = this._input;
+    let k = args.indexOf(key);
+
+    return k !== -1 && isExplicitlyOff(args[k + 1]);
   }
   getValue(key: string | string[], fallback: string): string;
   getValue(key: string | string[]): string | undefined;
