@@ -11,8 +11,8 @@ Contents: [parseArgs](#parseargs) · [Args](#args) · [isOn / isOff / isExplicit
 ```js
 import { parseArgs } from "args-json";
 
-let args = parseArgs(
-  "--config=./config.json -v 1.5.12 -d \"lorem ipsum\" -i -n=0 --test-value qwe --debug",
+const args = parseArgs(
+  "--config=./config.json -v 1.0.0 -d \"lorem ipsum\" -i -n=0 --test-value abc --debug",
   {
     v: "version",
     d: "description",
@@ -20,11 +20,11 @@ let args = parseArgs(
 );
 // args = {
 //   config: "./config.json",
-//   version: "1.5.12",
+//   version: "1.0.0",
 //   description: "lorem ipsum",
 //   i: true,
 //   n: 0,
-//   testValue: "qwe",
+//   testValue: "abc",
 //   debug: true,
 // };
 ```
@@ -36,7 +36,7 @@ The second parameter is optional. It is a way to rename argument keys in the out
 Other examples:
 
 ```js
-let args = parseArgs("--config ./configs/default.json --debug");
+const args = parseArgs("--config ./configs/default.json --debug");
 // { config: "./configs/default.json", debug: true }
 
 if (args.debug) console.log(args.config);
@@ -45,25 +45,25 @@ if (args.debug) console.log(args.config);
 The first line is also equivalent to:
 
 ```js
-let args = parseArgs("--config \"./configs/default.json\" --debug");
+const args = parseArgs("--config \"./configs/default.json\" --debug");
 ```
 
 or
 
 ```js
-let args = parseArgs("--config=./configs/default.json --debug");
+const args = parseArgs("--config=./configs/default.json --debug");
 ```
 
 or
 
 ```js
-let args = parseArgs("--config=\"./configs/default.json\" --debug");
+const args = parseArgs("--config=\"./configs/default.json\" --debug");
 ```
 
 ### String array input
 
 ```js
-let args = parseArgs(["--config", "./configs/default.json", "--debug"]);
+const args = parseArgs(["--config", "./configs/default.json", "--debug"]);
 // { config: "./configs/default.json", debug: true }
 
 if (args.debug) console.log(args.config);
@@ -74,13 +74,13 @@ if (args.debug) console.log(args.config);
 In a Node environment, `parseArgs()` without parameters parses the node process arguments.
 
 ```js
-let args = parseArgs();
+const args = parseArgs();
 ```
 
 is equivalent to
 
 ```js
-let args = parseArgs(process.argv);
+const args = parseArgs(process.argv);
 ```
 
 If the `process` object is unavailable in the current environment, `parseArgs()` is equivalent to `parseArgs([])`.
@@ -88,11 +88,10 @@ If the `process` object is unavailable in the current environment, `parseArgs()`
 ### Key mapping
 
 ```js
-let args = parseArgs("-c ./configs/default.json --debug", { c: "config" });
+const args = parseArgs("-c ./configs/default.json --debug", { c: "config" });
 // { config: "./configs/default.json", debug: true }
 
-if (args.debug)
-  console.log(args.config);
+if (args.debug) console.log(args.config);
 ```
 
 As specified with the second parameter of `parseArgs()`, `-c` is mapped to `config` in the output.
@@ -102,7 +101,7 @@ As specified with the second parameter of `parseArgs()`, `-c` is mapped to `conf
 Values are `JSON.parse`d if they are parsable.
 
 ```js
-let args = parseArgs("-d \"{\"x\":10}\" -i 0 -n=3 -c ./config.json");
+const args = parseArgs("-d \"{\"x\":10}\" -i 0 -n=3 -c ./config.json");
 // { d: { x: 10 }, i: 0, n: 3, c: "./config.json" }
 ```
 
@@ -111,7 +110,7 @@ let args = parseArgs("-d \"{\"x\":10}\" -i 0 -n=3 -c ./config.json");
 Values that aren't preceded by a dashed key (like `-x` or `--xxx`) are collected in an array under an empty key entry.
 
 ```js
-let args = parseArgs("unkeyed args --debug -x 0 -y 1");
+const args = parseArgs("unkeyed args --debug -x 0 -y 1");
 // { "": ["unkeyed", "args"], debug: true, x: 0, y: 1 }
 ```
 
@@ -125,7 +124,7 @@ type CustomShape = {
   debug?: boolean;
 };
 
-let args = parseArgs<CustomShape>("--level=0 --debug");
+const args = parseArgs<CustomShape>("--level=0 --debug");
 
 if (args.debug) console.log(`Level: ${args.level}`);
 ```
@@ -137,7 +136,7 @@ Use an `Args` class instance to facilitate access to named command line argument
 ```js
 import { Args } from "args-json";
 
-let args = new Args(["--key", "value", "--paths", "./x", "./y"]);
+const args = new Args(["--key", "value", "--paths", "./x", "./y"]);
 
 args.hasKey("--key") // true
 args.hasKey("--arg") // false
@@ -151,7 +150,7 @@ Without an argument array, `new Args()` is equivalent to `new Args(process.argv)
 
 Use `isOn(x)` and `isOff(x)` to check whether a parameter value is `true`, `1`, `"on"` or `false`, `0`, `"off"`, `null`, `undefined`.
 
-```ts
+```js
 import { parseArgs, isOn, isOff } from "args-json";
 
 // isOn
@@ -179,7 +178,7 @@ new Args(["--debug", "off"]).isOff("--debug") // true
 
 Note the difference between `isOff(x)` and `isExplicitlyOff(x)`: `isExplicitlyOff(x)` results in `true` if `x` is present and it's explicitly a turn-off value, while `isOff(x)` returns `true` if `x` is omitted, too.
 
-```ts
+```js
 import { parseArgs, isOff, isExplicitlyOff } from "args-json";
 
 isOff(parseArgs("--debug=off").debug) // true
@@ -200,5 +199,5 @@ type Params = {
   debug?: On | Off;
 };
 
-let args = parseArgs<Params>("--debug=on");
+const args = parseArgs<Params>("--debug=on");
 ```
