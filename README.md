@@ -152,29 +152,25 @@ Without an argument array, `new Args()` is equivalent to `new Args(process.argv.
 Use `isOn(x)` and `isOff(x)` to check whether a parameter value is `true`, `1`, `"on"` or `false`, `0`, `"off"`, `null`, `undefined`.
 
 ```ts
-import { parseArgs, isOn, isOff, type On, type Off } from "args-json";
-
-type Params = {
-  debug?: On | Off;
-};
+import { parseArgs, isOn, isOff } from "args-json";
 
 // isOn
-isOn(parseArgs<Params>("--debug").debug) // true
-isOn(parseArgs<Params>("--debug=1").debug) // true
-isOn(parseArgs<Params>("--debug=on").debug) // true
+isOn(parseArgs("--debug").debug) // true
+isOn(parseArgs("--debug=1").debug) // true
+isOn(parseArgs("--debug=on").debug) // true
 
-isOn(parseArgs<Params>("").debug) // false
-isOn(parseArgs<Params>("--debug=0").debug) // false
-isOn(parseArgs<Params>("--debug=off").debug) // false
+isOn(parseArgs("").debug) // false
+isOn(parseArgs("--debug=0").debug) // false
+isOn(parseArgs("--debug=off").debug) // false
 
 new Args(["--debug"]).isOn("--debug") // true
 new Args(["--debug", "1"]).isOn("--debug") // true
 new Args(["--debug", "on"]).isOn("--debug") // true
 
 // isOff
-isOff(parseArgs<Params>("").debug) // true
-isOff(parseArgs<Params>("--debug=0").debug) // true
-isOff(parseArgs<Params>("--debug=off").debug) // true
+isOff(parseArgs("").debug) // true
+isOff(parseArgs("--debug=0").debug) // true
+isOff(parseArgs("--debug=off").debug) // true
 
 new Args([""]).isOff("--debug") // true
 new Args(["--debug", "0"]).isOff("--debug") // true
@@ -184,13 +180,25 @@ new Args(["--debug", "off"]).isOff("--debug") // true
 Note the difference between `isOff(x)` and `isExplicitlyOff(x)`: `isExplicitlyOff(x)` results in `true` if `x` is present and it's explicitly a turn-off value, while `isOff(x)` returns `true` if `x` is omitted, too.
 
 ```ts
-import { isExplicitlyOff, isOff } from "args-json";
+import { parseArgs, isOff, isExplicitlyOff } from "args-json";
 
-isOff(parseArgs<Params>("--debug=off").debug) // true
-isOff(parseArgs<Params>("--debug=0").debug) // true
-isOff(parseArgs<Params>("").debug) // true
+isOff(parseArgs("--debug=off").debug) // true
+isOff(parseArgs("--debug=0").debug) // true
+isOff(parseArgs("").debug) // true
 
-isExplicitlyOff(parseArgs<Params>("--debug=off").debug) // true
-isExplicitlyOff(parseArgs<Params>("--debug=0").debug) // true
-isExplicitlyOff(parseArgs<Params>("").debug) // false
+isExplicitlyOff(parseArgs("--debug=off").debug) // true
+isExplicitlyOff(parseArgs("--debug=0").debug) // true
+isExplicitlyOff(parseArgs("").debug) // false
+```
+
+Use the utility types `On` and `Off` (or `ExplicitlyOff`) to define a switch parameter type:
+
+```ts
+import { parseArgs, type On, type Off } from "args-json";
+
+type Params = {
+  debug?: On | Off;
+};
+
+let args = parseArgs<Params>("--debug=on");
 ```
