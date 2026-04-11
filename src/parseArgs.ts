@@ -1,12 +1,9 @@
+import { getDefaultInput } from "./getDefaultInput.ts";
 import { isKey } from "./isKey.ts";
 import { split } from "./split.ts";
 import { toKey } from "./toKey.ts";
 
 export type ArgMap = Record<string, string>;
-
-function getDefaultInput(): string[] {
-  return typeof process === "undefined" ? [] : process.argv;
-}
 
 export function parseArgs<
   T extends Record<string, unknown> = Record<string, unknown>,

@@ -1,10 +1,11 @@
+import { getDefaultInput } from "./getDefaultInput.ts";
 import { isExplicitlyOff } from "./isExplicitlyOff.ts";
 import { isKey } from "./isKey.ts";
 import { isOff } from "./isOff.ts";
 import { isOn } from "./isOn.ts";
 
 function normalizeInput(input?: string[]) {
-  let source = input ?? process.argv.slice(2);
+  let source = input ?? getDefaultInput();
   let result = [];
 
   for (let s of source) {

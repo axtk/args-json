@@ -39,8 +39,7 @@ Other examples:
 let args = parseArgs("--config ./configs/default.json --debug");
 // { config: "./configs/default.json", debug: true }
 
-if (args.debug)
-  console.log(args.config);
+if (args.debug) console.log(args.config);
 ```
 
 The first line is also equivalent to:
@@ -67,8 +66,7 @@ let args = parseArgs("--config=\"./configs/default.json\" --debug");
 let args = parseArgs(["--config", "./configs/default.json", "--debug"]);
 // { config: "./configs/default.json", debug: true }
 
-if (args.debug)
-  console.log(args.config);
+if (args.debug) console.log(args.config);
 ```
 
 ### Node process arguments
@@ -84,6 +82,8 @@ is equivalent to
 ```js
 let args = parseArgs(process.argv);
 ```
+
+If the `process` object is unavailable in the current environment, `parseArgs()` is equivalent to `parseArgs([])`.
 
 ### Key mapping
 
@@ -145,7 +145,7 @@ args.getValue("--key") // "value"
 args.getValues("--paths") // ["./x", "./y"]
 ```
 
-Without an argument array, `new Args()` is equivalent to `new Args(process.argv.slice(2))`. An `Args` object initialized without arguments can also be directly imported with `import { args } from "args-json";`.
+Without an argument array, `new Args()` is equivalent to `new Args(process.argv)` (or `new Args([])` if the `process` object is unavailable in the current environment). An `Args` object initialized without arguments can also be directly imported with `import { args } from "args-json";`.
 
 ## isOn / isOff / isExplicitlyOff
 
