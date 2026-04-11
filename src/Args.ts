@@ -3,26 +3,31 @@ import { isKey } from "./isKey.ts";
 import { isOff } from "./isOff.ts";
 import { isOn } from "./isOn.ts";
 
+function normalizeInput(input?: string[]) {
+  let source = input ?? process.argv.slice(2);
+  let result = [];
+
+  for (let s of source) {
+    // Split `"--key=value"` into "--key" and "value"
+    if (s.startsWith("-") && s.includes("=")) {
+      let key = s.slice(0, s.indexOf("="));
+
+      if (isKey(key)) {
+        result.push(key, s.slice(key.length + 1));
+        continue;
+      }
+    }
+
+    result.push(s);
+  }
+
+  return result;
+}
+
 export class Args {
   _input: string[];
   constructor(input?: string[]) {
-    this._input = (input ?? process.argv.slice(2)).reduce<string[]>(
-      (acc, s) => {
-        // Split `"--key=value"` into "--key" and "value"
-        if (s.startsWith("-") && s.includes("=")) {
-          let key = s.slice(0, s.indexOf("="));
-
-          if (isKey(key)) {
-            acc.push(key, s.slice(key.length + 1));
-            return acc;
-          }
-        }
-
-        acc.push(s);
-        return acc;
-      },
-      [],
-    );
+    this._input = normalizeInput(input);
   }
   hasKey(x: string) {
     return isKey(x) && this._input.includes(x);
